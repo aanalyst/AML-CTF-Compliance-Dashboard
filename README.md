@@ -129,3 +129,32 @@ Trade-off: Less complex models may miss subtle patterns, but the month-by-month 
 - **Rather than:** Arbitrarily lowering threshold or keeping dead-weight feature
 - **Result:** Cleaner model, reduced overfitting to dataset-specific artifacts
 ---
+
+## Key Insights
+ 
+### 1. **Model Validation Beyond Metrics**
+The monthly tracking chart (confirmed vs ML flags) proves the model learned real patterns, not just optimised for the training set. This is more persuasive than ROC-AUC alone.
+ 
+### 2. **Compliance Context Changes Everything**
+In traditional ML, precision and recall are equally important. In AML, catching every real case matters far more than false positives. This design choice reflects domain understanding.
+ 
+### 3. **Data Quality Decisions Are Decisions**
+Dropping `is_high_customer_risk` wasn't a failure—it was evidence-based engineering. Bringing data-driven reasoning to feature selection is stronger than blindly keeping everything.
+ 
+### 4. **SQL Views Are Compliance Infrastructure**
+The 9 views encode regulatory obligations (TTR, structuring, typologies) at the data layer, not the reporting layer. This makes compliance queries fast and eliminates manual filter logic.
+ 
+### 5. **The Pipeline Matters More Than Any Single Component**
+Power BI looks nice, but the real value is in the clean data → normalised schema → validated model → regulatory output flow. Hiring managers care about your ability to build this kind of system.
+ 
+---
+ 
+## Known Limitations
+ 
+1. **LabelEncoded Categoricals:** Alphabetical ordering introduces implicit ordinal assumptions. Production model would use one-hot encoding despite computational cost.
+2. **Synthetic Data:** AMLNet is high-quality synthetic data with realistic patterns but lacks real-world edge cases (e.g., sophisticated obfuscation, emerging typologies).
+3. **Customer Risk Score Distribution:** The heavily left-skewed `customer_risk_score` field (median 97, max 100) is a dataset quirk and would not generalise to real transactional data.
+4. **No Temporal Validation:** Model trained on all months with no separate hold-out period for true out-of-time performance testing.
+5. **Limited Feature Engineering:** Only 17 features used; production systems would incorporate network effects, peer comparisons, and behavioural change signals.
+
+
