@@ -30,38 +30,7 @@ The pipeline transforms raw transactional data into actionable compliance intell
  
 ---
  
-## Architecture
- 
-```
-AMLNet_August_2025.csv (1.09M rows)
-            ↓
-    [01_eda_and_cleaning.py]
-    ├─ Metadata parsing (nested JSON → flat columns)
-    ├─ Feature engineering (structuring, TTR, night transactions)
-    └─ Data quality validation
-            ↓
-    amlnet_clean.csv (57 columns)
-            ↓
-    [02_sql_ingestion.py]
-    ├─ Normalised SQLite schema (41 core columns)
-    ├─ 9 compliance-aware views
-    └─ Transaction-to-ML-Score relationship
-            ↓
-    amlnet.db (SQLite)
-            ↓
-    [03_ml_risk_scoring.py]
-    ├─ Logistic Regression (class_weight='balanced')
-    ├─ 17-feature model
-    └─ Risk scores + flags for all transactions
-            ↓
-    [Power BI Desktop]
-    ├─ Page 1: Transaction Monitoring (4 KPIs + 4 visuals)
-    ├─ Page 2: Customer Risk (4 KPIs + 3 visuals)
-    └─ Page 3: Regulatory Summary (4 KPIs + 4 visuals)
-            ↓
-    [04_sar_report.py]
-    └─ AML_SAR_Report.xlsx (5 sheets, 1,700+ rows)
-```
+
  
 ---
  
