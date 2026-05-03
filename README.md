@@ -25,3 +25,16 @@ Australian financial institutions are required under the *AML/CTF Act 2006* to d
 | **High Risk Transactions** | 6,512 (0.60%) | risk_score > 80; 413 confirmed laundering within this group |
  
 ---
+
+# Executive Summary
+ 
+### Transaction Monitoring (Feb–Aug 2025)
+ 
+![Page 1 - Transaction Monitoring](https://github.com/aanalyst/AML-CTF-Compliance-Dashboard/blob/main/Screenshot%202026-04-30%20143137.png)
+ 
+| | |
+| --- | --- |
+| **1. Laundering Concentrated in Specific Categories** <ul><li>Shell Company (89 cases, $7,618 avg) and Property Investment (18 cases, $54,846 avg) show disproportionately high laundering rates despite small transaction volumes.</li><li>Cryptocurrency recorded a 100% laundering rate — every transaction in this category was confirmed laundering.</li><li>Everyday categories (Food, Transport, Healthcare, Utilities) recorded zero laundering cases across 650,000+ transactions.</li></ul> **2. Layering Dominates by Volume; Integration by Value** <ul><li>Layering: 1,370 cases (78.5%), $15.46M total, $11,287 avg per transaction.</li><li>Structuring: 321 cases (18.4%), $2.35M total, $7,320 avg per transaction.</li><li>Integration: 54 cases (3.1%), $3.04M total, $56,290 avg per transaction.</li></ul> | **3. ML Model Tracks Real Patterns** <ul><li>Month-by-month ML flags and confirmed laundering cases tracked with 97% correlation.</li><li>February: 341 confirmed vs 334 flagged. April: 197 vs 195. August: 58 vs 57.</li><li>This proves the model learned real underlying patterns — not just the training set distribution.</li></ul> **4. Laundering Rate Consistent Across Payment Methods** <ul><li>PayID: 0.1622% laundering rate.</li><li>CardNumber: 0.1537%.</li><li>BSB_Account: 0.1506%.</li><li>Differences are small but PayID's slightly elevated rate warrants monitoring as NPP adoption grows under Tranche 2.</li></ul> |
+ 
+---
+
