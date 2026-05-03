@@ -1,6 +1,6 @@
 # AML/CTF Compliance Dashboard
  
-![Dashboard Header](YOUR_HEADER_IMAGE_URL_HERE)
+![Dashboard Header](https://github.com/aanalyst/AML-CTF-Compliance-Dashboard/blob/main/Gemini_Generated_Image_psyjqbpsyjqbpsyj.png)
  
 | |
 | --- |
