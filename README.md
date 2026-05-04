@@ -50,7 +50,7 @@ Australian financial institutions are required under the *AML/CTF Act 2006* to d
  
 ## Laundering Typologies
  
-![Typology Breakdown](YOUR_TYPOLOGY_IMAGE_URL_HERE)
+![Typology Breakdown](https://github.com/aanalyst/AML-CTF-Compliance-Dashboard/blob/main/Screenshot%202026-05-04%20213737.png)
  
 | |
 | --- |
