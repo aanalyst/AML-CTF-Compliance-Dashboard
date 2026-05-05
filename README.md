@@ -78,14 +78,21 @@ ROC-AUC can look artificially strong on imbalanced data. The real validation is 
 | July | 221 | 217 | -4 |
 | August | 58 | 57 | -1 |
  
-The delta column shows the model flags slightly fewer transactions than the confirmed count each month — these are the false negatives, cases the model missed. Across 1,745 confirmed laundering cases, the model missed only 9 in the test set (97% recall). The monthly gaps visible above reflect that small miss rate distributed across time. The consistent direction of the delta — always negative, never positive — shows the model is not randomly over-flagging; it is conservatively catching the clearest signals each month.
+The delta column shows the model flags slightly fewer transactions than the confirmed count each month which are the false negatives, cases the model missed. Across 1,745 confirmed laundering cases, the model missed only 9 in the test set (97% recall). The monthly gaps visible above reflect that small miss rate distributed across time. The consistent direction of the delta (always negative), shows the model is not randomly over-flagging; it is conservatively catching the clearest signals each month.
  
 **The Precision Trade-off**
  
-Precision and recall tell separate stories here and should not be read together. The monthly chart above is about recall — how many real cases the model catches. Precision is a different question: of the 21,938 total transactions flagged across the full 1.09M dataset, only 1,745 are confirmed laundering cases. That is a precision of 8% — meaning 92% of flags are false positives.
+Precision and recall tell separate stories here and should not be read together. The monthly chart above is about recall — how many real cases the model catches. Precision is a different question: of the 21,938 total transactions flagged across the full 1.09M dataset, only 1,745 are confirmed laundering cases. That is a precision of 8%; meaning 92% of flags are false positives.
  
 In AML this is the correct design:
 - Missing a real laundering case risks AUSTRAC enforcement action and fines exceeding $50M.
-- Flagging 20,000 legitimate transactions for analyst review costs approximately $100K in labour — a worthwhile trade-off.
+- Flagging 20,000 legitimate transactions for analyst review costs approximately $100K in labour which is a worthwhile trade-off.
 - The model is not optimising for analyst convenience; it is optimising for regulatory compliance.
  
+## Feature Engineering Decisions
+ 
+| |
+| --- |
+| **Dropped: `is_high_customer_risk`** <br><br> Initial feature engineering included a binary flag for accounts with customer_risk_score ≥ 80. A dedicated distribution analysis revealed: <ul><li>Median customer_risk_score: **97**</li><li>75th percentile: **100**</li><li>Flag rate at threshold ≥80: **93.5%** of all 1.09M accounts</li></ul> A feature flagging 93.5% of records adds noise, not signal. The feature was dropped entirely rather than force-fitting an arbitrary lower threshold. This decision — removing a broken feature rather than keeping it for completeness — reflects production engineering thinking. <br><br> **Kept and Performing: `is_structuring_amount` and `exceeds_ttr_threshold`** <br><br> Both features directly encode AUSTRAC regulatory obligations and contributed meaningfully to model performance: <ul><li>`is_structuring_amount` — flags transactions in the $9,000–$9,999 AUD band</li><li>`exceeds_ttr_threshold` — flags transactions ≥$10,000 AUD</li></ul> These features improve recall by encoding domain-specific signals that generic transaction features miss. <br><br> **Known Limitation: LabelEncoder vs One-Hot Encoding** <br><br> Categorical columns (type, payment_method, category, device_type, device_os) were encoded using LabelEncoder for computational efficiency on 1M+ rows. This introduces implicit ordinal assumptions — alphabetical ordering implies a numeric relationship that doesn't exist. In production with proper infrastructure, one-hot encoding would be used. This trade-off is documented explicitly. |
+ 
+---
