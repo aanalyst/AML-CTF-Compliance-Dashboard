@@ -89,9 +89,3 @@ In AML this is the correct design:
 - Flagging 20,000 legitimate transactions for analyst review costs approximately $100K in labour — a worthwhile trade-off.
 - The model is not optimising for analyst convenience; it is optimising for regulatory compliance.
  
-**The Precision Trade-off**
- 
-Precision of 8% means 92% of flagged transactions are false positives. In AML this is the correct design:
-- Missing a real laundering case risks AUSTRAC enforcement action and fines exceeding $50M.
-- Flagging 20,000 legitimate transactions for analyst review costs approximately $100K in labour — a worthwhile trade-off.
-- The model is not optimising for analyst convenience; it is optimising for regulatory compliance.
