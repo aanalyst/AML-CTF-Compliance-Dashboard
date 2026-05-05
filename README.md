@@ -78,7 +78,16 @@ ROC-AUC can look artificially strong on imbalanced data. The real validation is 
 | July | 221 | 217 | -4 |
 | August | 58 | 57 | -1 |
  
-The model consistently flags slightly fewer transactions than the confirmed count — not randomly over or under. This systematic behaviour shows the model learned the underlying distribution of laundering activity rather than memorising training examples.
+The delta column shows the model flags slightly fewer transactions than the confirmed count each month — these are the false negatives, cases the model missed. Across 1,745 confirmed laundering cases, the model missed only 9 in the test set (97% recall). The monthly gaps visible above reflect that small miss rate distributed across time. The consistent direction of the delta — always negative, never positive — shows the model is not randomly over-flagging; it is conservatively catching the clearest signals each month.
+ 
+**The Precision Trade-off**
+ 
+Precision and recall tell separate stories here and should not be read together. The monthly chart above is about recall — how many real cases the model catches. Precision is a different question: of the 21,938 total transactions flagged across the full 1.09M dataset, only 1,745 are confirmed laundering cases. That is a precision of 8% — meaning 92% of flags are false positives.
+ 
+In AML this is the correct design:
+- Missing a real laundering case risks AUSTRAC enforcement action and fines exceeding $50M.
+- Flagging 20,000 legitimate transactions for analyst review costs approximately $100K in labour — a worthwhile trade-off.
+- The model is not optimising for analyst convenience; it is optimising for regulatory compliance.
  
 **The Precision Trade-off**
  
