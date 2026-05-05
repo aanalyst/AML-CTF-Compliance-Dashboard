@@ -62,8 +62,27 @@ Australian financial institutions are required under the *AML/CTF Act 2006* to d
 
 ## ML Model Validation
  
-![ML Validation Chart](https://github.com/aanalyst/AML-CTF-Compliance-Dashboard/blob/main/Screenshot%202026-05-05%20133855.png)
+![ML Validation Chart]()
  
-| |
-| --- |
-| **Why ROC-AUC of 0.9985 Is Not the Story** <br><br> ROC-AUC can look artificially strong on imbalanced data. The real validation is whether the model tracks actual confirmed cases over time: <br><br> | Month | Confirmed Cases | ML Flagged | Delta | | --- | --- | --- | --- | | February | 341 | 334 | -7 | | March | 332 | 329 | -3 | | April | 197 | 195 | -2 | | May | 276 | 272 | -4 | | June | 320 | 312 | -8 | | July | 221 | 217 | -4 | | August | 58 | 57 | -1 | <br> The model consistently flags slightly fewer transactions than the confirmed count — not randomly over or under. This systematic behaviour shows the model learned the underlying distribution of laundering activity rather than memorising training examples. <br><br> **The Precision Trade-off** <br> Precision of 8% means 92% of flagged transactions are false positives. In AML this is the correct design: <ul><li>Missing a real laundering case risks AUSTRAC enforcement action and fines exceeding $50M.</li><li>Flagging 20,000 legitimate transactions for analyst review costs approximately $100K in labour — a worthwhile trade-off.</li><li>The model is not optimising for analyst convenience; it is optimising for regulatory compliance.</li></ul> |
+**Why ROC-AUC of 0.9985 Is Not the Story**
+ 
+ROC-AUC can look artificially strong on imbalanced data. The real validation is whether the model tracks actual confirmed cases over time:
+ 
+| Month | Confirmed Cases | ML Flagged | Delta |
+| --- | --- | --- | --- |
+| February | 341 | 334 | -7 |
+| March | 332 | 329 | -3 |
+| April | 197 | 195 | -2 |
+| May | 276 | 272 | -4 |
+| June | 320 | 312 | -8 |
+| July | 221 | 217 | -4 |
+| August | 58 | 57 | -1 |
+ 
+The model consistently flags slightly fewer transactions than the confirmed count — not randomly over or under. This systematic behaviour shows the model learned the underlying distribution of laundering activity rather than memorising training examples.
+ 
+**The Precision Trade-off**
+ 
+Precision of 8% means 92% of flagged transactions are false positives. In AML this is the correct design:
+- Missing a real laundering case risks AUSTRAC enforcement action and fines exceeding $50M.
+- Flagging 20,000 legitimate transactions for analyst review costs approximately $100K in labour — a worthwhile trade-off.
+- The model is not optimising for analyst convenience; it is optimising for regulatory compliance.
