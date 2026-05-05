@@ -96,3 +96,26 @@ In AML this is the correct design:
 | **Dropped: `is_high_customer_risk`** <br><br> Initial feature engineering included a binary flag for accounts with customer_risk_score ≥ 80. A dedicated distribution analysis revealed: <ul><li>Median customer_risk_score: **97**</li><li>75th percentile: **100**</li><li>Flag rate at threshold ≥80: **93.5%** of all 1.09M accounts</li></ul> A feature flagging 93.5% of records adds noise, not signal. The feature was dropped entirely rather than force-fitting an arbitrary lower threshold. <br><br> **Kept and Performing: `is_structuring_amount` and `exceeds_ttr_threshold`** <br><br> Both features directly encode AUSTRAC regulatory obligations and contributed meaningfully to model performance: <ul><li>`is_structuring_amount` — flags transactions in the $9,000–$9,999 AUD band</li><li>`exceeds_ttr_threshold` — flags transactions ≥$10,000 AUD</li></ul> These features improve recall by encoding domain-specific signals that generic transaction features miss. <br><br> **Known Limitation: LabelEncoder vs One-Hot Encoding** <br><br> Categorical columns (type, payment_method, category, device_type, device_os) were encoded using LabelEncoder for computational efficiency on 1M+ rows. This introduces implicit ordinal assumptions — alphabetical ordering implies a numeric relationship that doesn't exist. In production with proper infrastructure, one-hot encoding would be used. This trade-off is documented explicitly. |
  
 ---
+
+# Recommendations
+### Transaction Monitoring
+ 
+* **Apply Enhanced Due Diligence (EDD) to Shell Company and Cryptocurrency transactions by default.**
+  + Shell Company laundering rate: 7.86% vs 0.16% overall average
+  + Cryptocurrency: 100% laundering rate in dataset
+  + Recommend automatic EDD trigger regardless of transaction amount for these categories.
+* **Implement typology-specific detection rules alongside the ML model.**
+  + Layering: account velocity and network graph analysis (same account in multiple sequential transactions)
+  + Integration: category and entity screening (Shell Companies, property vehicles, cryptocurrency platforms)
+  + Structuring: threshold proximity monitoring with 30-day lookback window per account.
+ 
+### Customer Risk
+ 
+* **Review PayID laundering rate at the compliance committee level on a monthly basis.**
+  + PayID currently leads CardNumber and BSB_Account in laundering rate — the gap is narrow today but will widen as NPP adoption grows under Tranche 2.
+  + A defined escalation threshold should be agreed by the compliance committee now, before volume growth makes the problem harder to manage.
+  + Waiting until PayID cases spike before acting means the compliance function will always be responding rather than preventing.
+* **Allocate geographic investigation resources by laundering rate, not absolute case count.**
+  + Sydney and Melbourne generate the most cases simply because they have the most transactions — not because they are higher risk.
+  + Directing disproportionate investigation effort toward these cities means under-resourcing genuinely elevated-risk locations elsewhere.
+  + Resource allocation decisions should be based on laundering rate per city, ensuring effort goes where risk is highest rather than where volume is highest.
